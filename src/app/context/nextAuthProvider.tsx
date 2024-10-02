@@ -1,7 +1,6 @@
 "use client";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
-import { Inter } from "next/font/google";
-import { Box, createTheme, CssBaseline, ThemeProvider, Toolbar } from "@mui/material";
+import { Box, createTheme, CssBaseline, responsiveFontSizes, ThemeProvider, Toolbar } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 
@@ -9,8 +8,6 @@ import { Session } from "next-auth";
 import NavigationBar from "../_components/navigationbar";
 import SideBar from "../_components/sidebar";
 import AuthGuard from "../_components/authGuard";
-
-const inter = Inter({ subsets: ["latin"] });
 
 let theme = createTheme({
   palette: {
@@ -21,11 +18,18 @@ let theme = createTheme({
     },
   },
   typography: {
-    h5: {
-      fontWeight: 500,
-      fontSize: 26,
-      letterSpacing: 0.5,
-    },
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
   },
   shape: {
     borderRadius: 8,
@@ -67,33 +71,6 @@ theme = {
         },
       },
     },
-    MuiTabs: {
-      styleOverrides: {
-        root: {
-          marginLeft: theme.spacing(1),
-        },
-        indicator: {
-          height: 3,
-          borderTopLeftRadius: 3,
-          borderTopRightRadius: 3,
-          backgroundColor: theme.palette.common.white,
-        },
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          margin: '0 16px',
-          minWidth: 0,
-          padding: 0,
-          [theme.breakpoints.up('md')]: {
-            padding: 0,
-            minWidth: 0,
-          },
-        },
-      },
-    },
     MuiIconButton: {
       styleOverrides: {
         root: {
@@ -127,7 +104,7 @@ theme = {
     MuiListItemText: {
       styleOverrides: {
         primary: {
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: theme.typography.fontWeightMedium,
         },
       },
@@ -144,6 +121,14 @@ theme = {
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: 16,
+          fontWeight: theme.typography.fontWeightMedium,
+        },
+      },
+    },
     MuiAvatar: {
       styleOverrides: {
         root: {
@@ -154,6 +139,7 @@ theme = {
     },
   },
 };
+theme = responsiveFontSizes(theme);
 
 export const NextAuthProvider = ({
   children,

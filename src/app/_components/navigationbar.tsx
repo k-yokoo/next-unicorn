@@ -1,10 +1,10 @@
 "use client";
-import { AppBar, Avatar, Box, IconButton, Link, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, IconButton, Link, Toolbar, Typography } from "@mui/material";
 import React from "react";
 import { useSession } from 'next-auth/react';
 
 const NavigationBar = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   console.log(`session: ${JSON.stringify(session)}`);
   return (
     <AppBar
