@@ -47,6 +47,7 @@ const itemCategory = {
 const SideBar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const version = process.env.version;
 
   const clickHandler = (url: string) => {
     router.push(url);
@@ -75,7 +76,7 @@ const SideBar = () => {
       <Box sx={{ overflow: "auto" }}>
         <List>
           <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-            Paperbase
+            v.{version}
           </ListItem>
           {defaultList.map(({ name, url, icon }: MenuItem) => (
             <ListItem sx={{ marginTop: 'auto' }} key={name} disablePadding>

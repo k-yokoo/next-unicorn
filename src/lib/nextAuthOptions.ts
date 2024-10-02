@@ -17,9 +17,9 @@ const authOptions: NextAuthOptions = {
           type: 'password'
         }
       },
-      async authorize(/* credentials, req */) {
+      async authorize(credentials /* , req */) {
         // ここでユーザー認証を行う
-        const user = { id: '1', name: 'Taro', email: 'test@example.com', role: "admin", backendToken: "test" }
+        const user = { id: '1', name: 'Taro', email: credentials?.username, role: "admin", backendToken: "test" }
         if (user) {
           return user
         } else {

@@ -6,9 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import React, { useState } from "react";
-import { Box, Typography, FormControl, RadioGroup, FormControlLabel, Radio, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Box, Typography, FormControl, RadioGroup, FormControlLabel, Radio, Accordion, AccordionSummary, AccordionDetails, Button, Snackbar, Alert, SnackbarCloseReason, CircularProgress } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Grid from '@mui/material/Grid2';
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 
 const steps = ['本体＋周辺装置', 'システム', 'ウィルス対応'];
 const contentStyle = { minWidth: '700px', maxWidth: '1200px' };
@@ -126,6 +130,7 @@ const checkColumn3 = {
   ]
 };
 const MyDeviceInspection = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const deviceId = searchParams.get('id');
   const [values, setValues] = useState<{ [key: string]: string | null }>({
@@ -133,7 +138,9 @@ const MyDeviceInspection = () => {
     group2: null,
     group3: null,
   });
-
+  const [open, setOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  
   const handleChange = (groupId: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -141,23 +148,61 @@ const MyDeviceInspection = () => {
     }));
   };
 
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason,
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+    router.push('/myDevice');
+  };
+
+  const registerResult = () => {
+    setIsSaving(true);
+    setTimeout(() => {
+      setOpen(true);
+      setIsSaving(false);
+    }, 1000);
+  };
+
+  const pageBack = () => {
+    router.push('/myDevice');
+  };
+
   return (
     <>
-      <Box>
-        DeviceName: {deviceId}
-      </Box>
+      <Paper elevation={3} sx={{ p: 3, width: '74%' }}>
+        <Box sx={{ fontSize: '18px', fontWeight: 'bold' }}>
+          DeviceName: {deviceId}
+        </Box>
+        <Box sx={{ marginTop: '50px', width: '400px', display: 'flex', justifyContent: 'space-between' }}>
+          <Button onClick={pageBack} size="large" variant="outlined" startIcon={<ArrowBackIosIcon />}>
+            前の画面に戻る
+          </Button>
+          <Button onClick={registerResult} size="large" variant="contained" endIcon={isSaving ? <CircularProgress color="inherit" size="22px" /> : <DoneOutlineIcon /> }>
+            点検結果を登録
+          </Button>
+        </Box>
+      </Paper>
       <Accordion sx={contentStyle} defaultExpanded>
         <AccordionSummary
           sx={{
-            backgroundColor: "primary.main",
+            backgroundColor: "success.main",
             color: "white",
             fontWeight: "bold",
           }}
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={<ExpandMoreIcon  />}
           aria-controls="panel1-content"
           id="panel1-header"
         >
-          {steps[0]}
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2} sx={{ width: '85%' }}>
+              <Grid size={9}>{steps[0]}</Grid>
+              <Grid size={2}>点検結果：合格</Grid>
+            </Grid>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <TableContainer sx={contentStyle} component={Paper}>
@@ -196,10 +241,10 @@ const MyDeviceInspection = () => {
           </TableContainer>
         </AccordionDetails>
       </Accordion>
-      <Accordion sx={contentStyle} defaultExpanded>
+      <Accordion sx={contentStyle}>
         <AccordionSummary
           sx={{
-            backgroundColor: "success.main",
+            backgroundColor: "primary.main",
             color: "white",
             fontWeight: "bold",
           }}
@@ -207,7 +252,12 @@ const MyDeviceInspection = () => {
           aria-controls="panel2-content"
           id="panel2-header"
         >
-          {steps[1]}
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2} sx={{ width: '85%' }}>
+              <Grid size={9}>{steps[1]}</Grid>
+              <Grid size={2}>点検結果：不合格</Grid>
+            </Grid>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <TableContainer sx={contentStyle} component={Paper}>
@@ -246,7 +296,7 @@ const MyDeviceInspection = () => {
           </TableContainer>
         </AccordionDetails>
       </Accordion>
-      <Accordion sx={contentStyle} defaultExpanded>
+      <Accordion sx={contentStyle}>
         <AccordionSummary
           sx={{
             backgroundColor: "warning.main",
@@ -257,7 +307,12 @@ const MyDeviceInspection = () => {
           aria-controls="panel3-content"
           id="panel3-header"
         >
-          {steps[2]}
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2} sx={{ width: '85%' }}>
+              <Grid size={9}>{steps[2]}</Grid>
+              <Grid size={2}>点検結果：合格</Grid>
+            </Grid>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <TableContainer sx={contentStyle} component={Paper}>
@@ -296,6 +351,16 @@ const MyDeviceInspection = () => {
           </TableContainer>
         </AccordionDetails>
       </Accordion>
+      <Snackbar open={open} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}autoHideDuration={2000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          点検結果を登録しました!
+        </Alert>
+      </Snackbar>
     </>
   );
 };

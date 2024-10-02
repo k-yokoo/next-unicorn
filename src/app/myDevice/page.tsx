@@ -55,7 +55,7 @@ const PageOne = () => {
   return (
     <Paper elevation={3} sx={{ p: 5, width: '90%' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography sx={{ marginBottom: '20px' }} variant='h4' >{session?.user.name}さんの点検対象機器</Typography>
+        <Typography sx={{ marginBottom: '20px' }} variant='h4' >{session?.user.email}さんの点検対象機器</Typography>
         {isLoading && (
           <CircularProgress />
         )}
