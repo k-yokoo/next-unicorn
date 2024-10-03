@@ -30,7 +30,7 @@ const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 60, // セッションの有効期限を30分に設定
+    maxAge: 60 * 60 * 24, // セッションの有効期限を24hに設定
   },
   callbacks: {
     jwt({ token, user }) {

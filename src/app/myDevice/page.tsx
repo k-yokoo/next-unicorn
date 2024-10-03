@@ -35,7 +35,7 @@ const PageOne = () => {
 
   const getUserData = async () => {
     try {
-      const response = await axios.get('/api/device/list');
+      const response = await axios.get('/api/device/user/list');
       setData(response.data.result);
       setIsLoading(false);
     } catch (error) {

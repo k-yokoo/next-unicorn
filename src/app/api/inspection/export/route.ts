@@ -1,5 +1,6 @@
-import { Data } from '@/app/type/globalData';
 import { NextResponse } from 'next/server';
+import { createZipWithExcelFiles } from '../../../utils/excelUtils';
+import { Data } from '@/app/type/globalData';
 
 const allRows: Data[] = [
   { deviceNo: '5R-16030', deviceType: 'クライアントPC', usage: '使用中', user: '山田 太郎', administrator: '山田 太郎', status: true },
@@ -12,10 +13,14 @@ const allRows: Data[] = [
   { deviceNo: '5R-16037', deviceType: 'クライアントPC', usage: '使用中', user: '山田 七郎', administrator: '山田 太郎', status: false },
   { deviceNo: '5R-16038', deviceType: 'クライアントPC', usage: '使用中', user: '山田 八郎', administrator: '山田 太郎', status: false },
 ];
-export async function GET() {
-  try {
-    return NextResponse.json({ result: allRows });
-  } catch (error) {
-    throw error
-  }
+
+export async function POST() {
+  const jsonDataArray = [ allRows[0], allRows[3], allRows[6]];
+  const zipBlob = await createZipWithExcelFiles(jsonDataArray);
+  const headers = new Headers({
+    'Content-Disposition': 'attachment; filename="files.zip"',
+    'Content-Type': 'application/zip',
+  });
+
+  return new NextResponse(zipBlob, { headers });
 }

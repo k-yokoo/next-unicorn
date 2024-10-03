@@ -1,5 +1,5 @@
 import { Data } from '@/app/type/globalData';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const allRows: Data[] = [
   { deviceNo: '5R-16030', deviceType: 'クライアントPC', usage: '使用中', user: '山田 太郎', administrator: '山田 太郎', status: true },
@@ -12,9 +12,21 @@ const allRows: Data[] = [
   { deviceNo: '5R-16037', deviceType: 'クライアントPC', usage: '使用中', user: '山田 七郎', administrator: '山田 太郎', status: false },
   { deviceNo: '5R-16038', deviceType: 'クライアントPC', usage: '使用中', user: '山田 八郎', administrator: '山田 太郎', status: false },
 ];
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    return NextResponse.json({ result: allRows });
+    const query = request.nextUrl.searchParams.get('status');
+    if (query === 'inspected') {
+      const inspectedRows = allRows.filter(row => row.status);
+      return NextResponse.json({
+        result: inspectedRows,
+      });
+    } else if (query === 'notInspected') {
+      const notInspectedRows = allRows.filter(row => !row.status);
+      return NextResponse.json({
+        result: notInspectedRows,
+      });
+    }
+    return NextResponse.json({ result: [] });
   } catch (error) {
     throw error
   }

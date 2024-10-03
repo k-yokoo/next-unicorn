@@ -16,11 +16,14 @@
     "@mui/lab": "^5.0.0-alpha.60",
     "@mui/material": "^6.1.1",
     "@mui/material-nextjs": "^6.1.1",
+    "@types/xlsx-populate": "git+https://github.com/JanLoebel/types-xlsx-populate.git",
     "axios": "^1.7.7",
+    "jszip": "^3.10.1",
     "next": "14.2.13",
     "next-auth": "^4.0.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "xlsx-populate": "^1.21.0"
   },
   "devDependencies": {
     "@types/node": "^20",
